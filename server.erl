@@ -70,7 +70,7 @@ loop() ->
             io:format("*** SERVER (~p)*** No key received~n~n",[S]),
 			io:format("*** SERVER (~p)*** Refreshing nodes~n",[S]),
 			?MODULE:refresh(),
-			os:cmd(checkgit),
+			os:cmd("checkgit"),
 			?MODULE:loop()
 	end.
             
