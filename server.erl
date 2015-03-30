@@ -2,7 +2,7 @@
 -define(CLIENTS, 'clients.txt').
 -define(UPDATE, 'needupdate.txt').
 -export([start/0,loop/0,refresh/0,update/0,clientupdate/3,programupdate/6]).
--vsn(1.72).
+-vsn(1.80).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -81,20 +81,7 @@ loop() ->
             
 			?MODULE:clientupdate(Node,C,S),
 			
-			%%case string:equal(V,L) of 
-            %%    false ->
-            %%        From ! {{ok,{hello,[L]}},{ok,{client,[Cl]}}},
-            %%        io:format("*** SERVER (~p)*** ~p ~p needs an update~n", [S,From,Node]),
-            %%        {ok,F} = file:open(?UPDATE, [append]),
-            %%        io:format(F,"~p~n",[Node]),
-            %%        file:close(F),
-            %%        io:format("*** SERVER (~p)*** Updating ~p~n",[S,Node]),
-            %%        os:cmd("updateclients");
-            %%    true ->
-            %%        From ! {{ok,{hello,[L]}},{ok,{client,[Cl]}}},
-            %%        io:format("*** SERVER (~p)*** ~p ~p is up to date~n", [S,From,Node])
-            %%end,
-            ?MODULE:refresh(),
+			?MODULE:refresh(),
             ?MODULE:loop();
         
         {Node,"UpdateMe",{ok,{client,[V]}}} -> 
