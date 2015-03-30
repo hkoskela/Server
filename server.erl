@@ -1,9 +1,8 @@
 -module(server).
--define(KEY, 'h3mpp4').
 -define(CLIENTS, 'clients.txt').
 -define(UPDATE, 'needupdate.txt').
 -export([start/0,loop/0,refresh/0,update/0]).
--vsn(1.49).
+-vsn(1.50).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -42,7 +41,7 @@ loop() ->
     ?MODULE:update(),
 	{ok,{server,[S]}} = beam_lib:version(server),
 	receive
-        {From, Node, {ok,{hello,[V]}},{ok,{hello,[C]}}} ->
+        {From, Node, {ok,{hello,[V]}},{ok,{client,[C]}}} ->
             io:format("*** SERVER (~p)*** Hello.beam: ~p~n Client.beam: ~p~n from ~p~n",[S,V,C,Node]),
 			{ok,{hello,[L]}} = beam_lib:version(hello),
 			{ok,{client,[Cl]}} = beam_lib:version(client),
