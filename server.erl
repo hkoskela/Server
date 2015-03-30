@@ -2,7 +2,7 @@
 -define(CLIENTS, 'clients.txt').
 -define(UPDATE, 'needupdate.txt').
 -export([start/0,loop/0,refresh/0,update/0,clientupdate/3,programupdate/6]).
--vsn(1.90).
+-vsn(1.91).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -70,14 +70,14 @@ loop() ->
 
     ?MODULE:update(),
     {ok,{server,[S]}} = beam_lib:version(server),
-    
+  	{ok,{hello,[L]}} = beam_lib:version(hello),
+	{ok,{client,[Cl]}} = beam_lib:version(client),
+				
 	lists:foreach(fun(Noodi) ->
 		{client, Noodi} ! {"request_version"},
 			receive 
 				{From, Node, {ok,{hello,[V]}},{ok,{client,[C]}}} ->
 		            io:format("*** SERVER (~p)*** Hello.beam: ~p~n Client.beam: ~p~n from ~p~n",[S,V,C,Node]),
-					{ok,{hello,[L]}} = beam_lib:version(hello),
-					{ok,{client,[Cl]}} = beam_lib:version(client),
 					io:format("Server: ~p Node: ~p~n", [L,V]),
             
 					?MODULE:programupdate(From,Node,V,L,Cl,S),
