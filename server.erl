@@ -2,7 +2,7 @@
 -define(CLIENTS, 'clients.txt').
 -define(UPDATE, 'needupdate.txt').
 -export([start/0,loop/0,refresh/0,update/0]).
--vsn(1.50).
+-vsn(1.51).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -48,7 +48,7 @@ loop() ->
 			io:format("Server: ~p Node: ~p~n", [L,V]),
 			case string:equal(C,Cl) of
 				false ->
-					{ok, CF} = file:open("~/hello/clients.txt", [append]),
+					{ok, CF} = file:open("clients.txt", [append]),
 					io:format(CF,"~p~n",[Node]),
 					file:close(CF),
 					io:format("*** SERVER (~p)*** Updating client.beam on ~p",[S,Node]),
