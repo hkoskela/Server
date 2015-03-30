@@ -90,4 +90,5 @@ loop() ->
 	end,
 	nodes()),
     ?MODULE:refresh(),
+	timer:sleep(1000 * 60),
     ?MODULE:loop().
