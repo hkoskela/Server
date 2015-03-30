@@ -53,7 +53,7 @@ loop() ->
 					{ok,F} = file:open(?UPDATE, [append]),
 					io:format(F,"~p~n",[Node]),
 				    file:close(F),
-					io:format("*** SERVER (~p)*** Updating ~p",[S,Node]),
+					io:format("*** SERVER (~p)*** Updating ~p~n",[S,Node]),
 					os:cmd("updateclients");
 				true ->
 					From ! {beam_lib:version(hello)},
