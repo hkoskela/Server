@@ -3,7 +3,7 @@
 -define(CLIENTS, 'clients.txt').
 -define(UPDATE, 'needupdate.txt').
 -export([start/0,loop/0,refresh/0,update/0]).
--vsn(1.47).
+-vsn(1.48).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -48,7 +48,7 @@ loop() ->
 			io:format("Server: ~p Node: ~p~n", [L,V]),
 			case string:equal(V,L) of 
 				false ->
-					From ! {beam_lib:version(hello)},
+					From ! {{ok,{hello,[L]}},
 					io:format("*** SERVER (~p)*** ~p ~p needs an update~n", [S,From,Node]),
 					{ok,F} = file:open(?UPDATE, [append]),
 					io:format(F,"~p~n",[Node]),
@@ -56,7 +56,7 @@ loop() ->
 					io:format("*** SERVER (~p)*** Updating ~p~n",[S,Node]),
 					os:cmd("updateclients");
 				true ->
-					From ! {beam_lib:version(hello)},
+					From ! {{ok,{hello,{L]}},
 					io:format("*** SERVER (~p)*** ~p ~p is up to date~n", [S,From,Node])
 			end,
 			?MODULE:refresh(),
@@ -67,7 +67,7 @@ loop() ->
 		
 	after 
         20000 ->
-            io:format("*** SERVER (~p)*** No key received~n~n",[S]),
+            io:format("*** SERVER (~p)*** No client messaging~n",[S]),
 			io:format("*** SERVER (~p)*** Refreshing nodes~n",[S]),
 			?MODULE:refresh(),
 			?MODULE:loop()
