@@ -45,10 +45,11 @@ loop() ->
         {From, Node, {ok,{hello,[V]}}} ->
             io:format("*** SERVER (~p)*** got ~p from ~p~n",[S,V,Node]),
 			{ok,{hello,[L]}} = beam_lib:version(hello),
+			{ok,{client,[Cl]}} = beam_lib:version(client),
 			io:format("Server: ~p Node: ~p~n", [L,V]),
 			case string:equal(V,L) of 
 				false ->
-					From ! {{ok,{hello,[L]}}},
+					From ! {{ok,{hello,[L]}},{ok,{client,[Cl]}}},
 					io:format("*** SERVER (~p)*** ~p ~p needs an update~n", [S,From,Node]),
 					{ok,F} = file:open(?UPDATE, [append]),
 					io:format(F,"~p~n",[Node]),
@@ -56,7 +57,7 @@ loop() ->
 					io:format("*** SERVER (~p)*** Updating ~p~n",[S,Node]),
 					os:cmd("updateclients");
 				true ->
-					From ! {{ok,{hello,[L]}}},
+					From ! {{ok,{hello,[L]}},{ok,{client,[Cl]}}},
 					io:format("*** SERVER (~p)*** ~p ~p is up to date~n", [S,From,Node])
 			end,
 			?MODULE:refresh(),
