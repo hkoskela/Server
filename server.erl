@@ -3,7 +3,7 @@
 -define(CLIENTS, 'clients.txt').
 -define(UPDATE, 'needupdate.txt').
 -export([start/0,loop/0,refresh/0,update/0]).
--vsn(1.46).
+-vsn(1.47).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -70,7 +70,6 @@ loop() ->
             io:format("*** SERVER (~p)*** No key received~n~n",[S]),
 			io:format("*** SERVER (~p)*** Refreshing nodes~n",[S]),
 			?MODULE:refresh(),
-			os:cmd("checkgit"),
 			?MODULE:loop()
 	end.
             
