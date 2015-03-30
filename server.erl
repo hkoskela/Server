@@ -3,7 +3,7 @@
 -define(CLIENTS, 'clients.txt').
 -define(UPDATE, 'needupdate.txt').
 -export([start/0,loop/0,refresh/0,update/0]).
--vsn(1.48).
+-vsn(1.49).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -42,11 +42,21 @@ loop() ->
     ?MODULE:update(),
 	{ok,{server,[S]}} = beam_lib:version(server),
 	receive
-        {From, Node, {ok,{hello,[V]}}} ->
-            io:format("*** SERVER (~p)*** got ~p from ~p~n",[S,V,Node]),
+        {From, Node, {ok,{hello,[V]}},{ok,{hello,[C]}}} ->
+            io:format("*** SERVER (~p)*** Hello.beam: ~p~n Client.beam: ~p~n from ~p~n",[S,V,C,Node]),
 			{ok,{hello,[L]}} = beam_lib:version(hello),
 			{ok,{client,[Cl]}} = beam_lib:version(client),
 			io:format("Server: ~p Node: ~p~n", [L,V]),
+			case string:equal(C,Cl) of
+				false ->
+					{ok, CF} = file:open("~/hello/clients.txt", [append]),
+					io:format(CF,"~p~n",[Node]),
+					file:close(CF),
+					io:format("*** SERVER (~p)*** Updating client.beam on ~p",[S,Node]),
+					os:cmd("clientupdate");
+				true ->
+					ok
+			end,
 			case string:equal(V,L) of 
 				false ->
 					From ! {{ok,{hello,[L]}},{ok,{client,[Cl]}}},
