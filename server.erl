@@ -2,7 +2,7 @@
 -define(CLIENTS, 'clients.txt').
 -define(UPDATE, 'needupdate.txt').
 -export([start/0,loop/0,refresh/0,update/0]).
--vsn(1.51).
+-vsn(1.52).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -71,6 +71,15 @@ loop() ->
 			end,
 			?MODULE:refresh(),
 			?MODULE:loop();
+		
+		{Node,"UpdateMe"} -> 
+			io:format("*** SERVER (~p)*** Client update request from ~p~n",[S,Node]),
+			{ok, CF} = file:open("clients.txt", [append]),
+			io:format(CF,"~p~n",[Node]),
+			file:close(CF),
+			io:format("*** SERVER (~p)*** Updating client.beam on ~p",[S,Node]),
+			os:cmd("clientupdate");
+
 		Msg ->
 			io:format("*** SERVER (~p)*** Received ~p~n~n",[S,Msg]),
 			?MODULE:loop()
