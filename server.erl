@@ -2,7 +2,7 @@
 -define(CLIENTS, 'clients.txt').
 -define(UPDATE, 'needupdate.txt').
 -export([start/0,loop/0,refresh/0,update/0]).
--vsn(1.53).
+-vsn(1.54).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
