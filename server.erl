@@ -1,8 +1,8 @@
 -module(server).
 -define(CLIENTS, 'clients.txt').
 -define(UPDATE, 'needupdate.txt').
--export([start/0,loop/0,refresh/0,update/0,clientupdate/3]).
--vsn(1.71).
+-export([start/0,loop/0,refresh/0,update/0,clientupdate/3,programupdate/6]).
+-vsn(1.72).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -77,9 +77,9 @@ loop() ->
             {ok,{client,[Cl]}} = beam_lib:version(client),
             io:format("Server: ~p Node: ~p~n", [L,V]),
             
-			programupdate(From,Node,V,L,Cl,S),
+			?MODULE:programupdate(From,Node,V,L,Cl,S),
             
-			clientupdate(Node,C,S),
+			?MODULE:clientupdate(Node,C,S),
 			
 			%%case string:equal(V,L) of 
             %%    false ->
