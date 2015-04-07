@@ -11,12 +11,16 @@ do
 		echo "$line out of date"
 		git pull origin
 		cp *.* ~/hello
-		cd ~/hello
+		cd ~/hello/test
 		if erlc ~/hello/hello/$line/$line.erl |& grep "error"
 		then
 			echo "compile error, resetting to last version"
 			cd ~/hello/hello/$line
 			git reset --hard HEAD@{1}
+			cd ~/hello
+		else
+			cd ~/hello/test
+			mv $line.beam ~/hello
 			cd ~/hello
 		fi		
 	else
