@@ -14,11 +14,12 @@ do
 		cd ~/hello/test
 		if erlc ~/hello/hello/$line/$line.erl |& grep "error"
 		then
-			echo "compile error, resetting to last version"
+			echo "*** $line compile error, resetting to last version ***"
 			cd ~/hello/hello/$line
 			git reset --hard HEAD@{1}
 			cd ~/hello
 		else
+			echo "$line compiled OK"
 			cd ~/hello/test
 			mv $line.beam ~/hello
 			cd ~/hello
