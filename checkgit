@@ -10,6 +10,7 @@ do
 	then 
 		echo "$line out of date"
 		git pull origin
+		cp * ~/hello
 		cd ~/hello
 		if erlc ~/hello/hello/$line/$line.erl |& grep "error"
 		then
