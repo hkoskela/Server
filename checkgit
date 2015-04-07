@@ -1,0 +1,28 @@
+#!/bin/bash
+#check if program is up to date
+
+while true
+do
+while read line
+do
+	cd ~/hello/hello/$line
+	if git remote show origin |& grep "local out of date"
+	then 
+		echo "$line out of date"
+		git pull origin
+		cd ~/hello
+		if erlc ~/hello/hello/$line/$line.erl |& grep "error"
+		then
+			echo "compile error, resetting to last version"
+			cd ~/hello/hello/$line
+			git reset --hard HEAD@{1}
+			cd ~/hello
+		fi		
+	else
+		echo "$line up to date"
+		cd ~/hello
+	fi
+done < programs.txt
+sleep 120
+checkgit
+done

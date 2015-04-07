@@ -1,0 +1,26 @@
+#!/bin/bash
+#check if program is up to date
+
+if [ -s ~/hello/needupdate.txt ]
+	then
+		sed "s/'//g" ~/hello/needupdate.txt > ~/hello/needup.txt
+		echo "needupdate.txt olemassa"
+		sort ~/hello/needup.txt | uniq > ~/hello/temp.txt
+		echo "needupdate -> temp"
+		rm ~/hello/needup.txt
+		rm ~/hello/needupdate.txt
+		while read line 
+		do
+			echo "resending to $line"
+			if scp -o ConnectTimeout=5 ~/hello/hello.beam $line:~/hello |& grep "lost connection"
+			then
+				echo "adding $line to needupdate"
+				echo $line >> ~/hello/needupdate.txt
+			else
+				echo "sent to $line ok"
+			fi
+		done < ~/hello/temp.txt
+		rm ~/hello/temp.txt
+	else
+		echo "No clients to update"
+fi

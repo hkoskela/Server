@@ -1,0 +1,21 @@
+#!/bin/bash
+#check if program is up to date
+
+if [ -s ~/hello/clients.txt ]
+	then
+		sed "s/'//g" ~/hello/clients.txt > ~/hello/clientup.txt
+		echo "clients.txt olemassa"
+		sort ~/hello/clientup.txt | uniq > ~/hello/ctemp.txt
+		rm ~/hello/clientup.txt
+		rm ~/hello/clients.txt
+		while read line 
+		do
+			echo "resending to $line"
+			if scp -o ConnectTimeout=5 ~/hello/client.beam $line:~/hello |& grep "lost connection"
+			then
+				echo "adding $line to clients.txt"
+				echo $line >> ~/hello/clients.txt
+			fi
+		done < ~/hello/ctemp.txt
+		rm ~/hello/ctemp.txt
+fi
