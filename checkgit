@@ -43,7 +43,7 @@ do
 			else
 				echo "$line compiled OK"
 				cd ~/hello/test
-				mv $line.* ~/hello
+				mv $line ~/hello
 				cp ~/hello/hello/$line/$line.ver ~/hello
 				cd ~/hello
 			fi
