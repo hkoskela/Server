@@ -3,7 +3,7 @@
 -define(UPDATE, 'needupdate.txt').
 -define(C_PROGRAM, 'hello_c.ver').
 -export([start/0,loop/0,refresh/0,update/0,clientupdate/3,programupdate/6,cprogramupdate/8]).
--vsn(3.05).
+-vsn(3.06).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -75,7 +75,8 @@ cprogramupdate(From,Node,V,L,Cl,S,Cver,Cv) ->
 			{ok,Cf} = file:open("Cupdate.txt", [append]),
 			io:format("*** SERVER (~p)*** ~p Hello_c needs an update at ~p~n", [S,From,Node]),
             io:format(Cf,"~p~n",[Node]),
-            file:close(Cf);
+            file:close(Cf),
+			os:cmd("updateclients");
         true ->
 			io:format("*** SERVER (~p)*** ~p Hello_c up to date at ~p~n", [S,From,Node])
     end,			
