@@ -1,8 +1,9 @@
 -module(server).
 -define(CLIENTS, 'clients.txt').
 -define(UPDATE, 'needupdate.txt').
--export([start/0,loop/0,refresh/0,update/0,clientupdate/3,programupdate/6]).
--vsn(2.01).
+-define(C_PROGRAM, 'hello_c.ver').
+-export([start/0,loop/0,refresh/0,update/0,clientupdate/3,programupdate/6,cprogramupdate/8]).
+-vsn(3.00).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -63,7 +64,36 @@ programupdate(From,Node,V,L,Cl,S) ->
             From ! {{ok,{hello,[L]}},{ok,{client,[Cl]}}},
             io:format("*** SERVER (~p)*** ~p ~p is up to date~n", [S,From,Node])
     end.
-    
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+cprogramupdate(From,Node,V,L,Cl,S,Cver,Cv) ->
+	
+	case string:equal(Cver,Cv) of
+		false ->
+			{ok,Cf} = file:open("Cupdate.txt", [append]),
+			io:format("*** SERVER (~p)*** ~p Hello_c needs an update at ~p~n", [S,From,Node]),
+            io:format(Cf,"~p~n",[Node]),
+            file:close(Cf);
+        true ->
+			io:format("*** SERVER (~p)*** ~p Hello_c up to date at ~p~n", [S,From,Node])
+    end,			
+	case string:equal(V,L) of 
+        false ->
+            From ! {{ok,{hello,[L]}},{ok,{client,[Cl]}},Cv},
+            io:format("*** SERVER (~p)*** ~p ~p needs an update~n", [S,From,Node]),
+            {ok,F} = file:open(?UPDATE, [append]),
+            io:format(F,"~p~n",[Node]),
+            file:close(F),
+            io:format("*** SERVER (~p)*** Updating ~p~n",[S,Node]),
+            os:cmd("updateclients");
+        true ->
+            From ! {{ok,{hello,[L]}},{ok,{client,[Cl]}},Cv},
+            io:format("*** SERVER (~p)*** ~p ~p is up to date~n", [S,From,Node])
+    end.
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 loop() ->
@@ -85,6 +115,22 @@ loop() ->
 			?MODULE:refresh(),
             ?MODULE:loop();
         
+		{From, Node, {ok,{hello,[V]}},{ok,{client,[C]}}, Cver} ->
+            io:format("*** SERVER (~p)*** Hello.beam: ~p~n Client.beam: ~p~n Hello_c: ~p~n from ~p~n",[S,V,C,Cver,Node]),
+            {ok,{hello,[L]}} = beam_lib:version(hello),
+            {ok,{client,[Cl]}} = beam_lib:version(client),
+			{ok,F} = file:open(?C_PROGRAM),
+			{ok,Cv} = io:getline(F,""),
+			file:close(F),
+            io:format("Server: ~p Node: ~p~n", [L,V]),
+            
+			?MODULE:cprogramupdate(From,Node,V,L,Cl,S,Cver,Cv),
+			
+			?MODULE:clientupdate(Node,C,S),
+			
+			?MODULE:refresh(),
+            ?MODULE:loop();
+		
         {Node,"UpdateMe",{ok,{client,[V]}}} -> 
             io:format("*** SERVER (~p)*** Client update request from ~p~n",[S,Node]),
             clientupdate(Node,V,S);
