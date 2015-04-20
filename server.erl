@@ -3,7 +3,7 @@
 -define(UPDATE, 'needupdate.txt').
 -define(C_PROGRAM, 'hello_c.ver').
 -export([start/0,loop/0,refresh/0,update/0,clientupdate/3,programupdate/6,cprogramupdate/8]).
--vsn(3.00).
+-vsn(3.01).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -133,7 +133,8 @@ loop() ->
 		
         {Node,"UpdateMe",{ok,{client,[V]}}} -> 
             io:format("*** SERVER (~p)*** Client update request from ~p~n",[S,Node]),
-            clientupdate(Node,V,S);
+            clientupdate(Node,V,S)
+			?MODULE:loop();
 
         Msg ->
             io:format("*** SERVER (~p)*** Received ~p~n~n",[S,Msg]),
