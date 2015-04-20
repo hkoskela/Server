@@ -36,7 +36,7 @@ if [ -s ~/hello/Cupdate.txt ]
 		while read line 
 		do
 			echo "resending to $line"
-			if scp -o ConnectTimeout=5 ~/hello/hello_c.* $line:~/hello |& grep "lost connection"
+			if scp -o ConnectTimeout=5 ~/hello/hello_c* $line:~/hello |& grep "lost connection"
 			then
 				echo "adding $line to Cupdate"
 				echo $line >> ~/hello/Cupdate.txt
