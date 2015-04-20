@@ -19,7 +19,7 @@ do
 			if erlc ~/hello/hello/$line/$line.erl |& grep "error"
 			then
 				echo "*** $line compile error, resetting to last version ***"
-				curl -i -H 'Authorization: token d448d3fb64cb2f88a6ad168f94f2aa80601c2b4a' -d '{"title": "Compile error","body": "Error compiling $line"}' https://api.github.com/repos/hkoskela/$line/issues
+				curl -u 'hkoskela:He8sky98git' -d '{"title": "Compile error","body": "Error compiling $line"}' https://api.github.com/repos/hkoskela/$line/issues
 				cd ~/hello/hello/$line
 				git reset --hard HEAD@{1}
 				cd ~/hello
@@ -36,7 +36,7 @@ do
 			if g++ ~/hello/hello/$line/$line.c -o $line |& grep "error"
 			then
 				echo "*** $line compile error, resetting to last version ***"
-				curl -i -H 'Authorization: token d448d3fb64cb2f88a6ad168f94f2aa80601c2b4a' -d '{"title": "Compile error","body": "Error compiling $line"}' https://api.github.com/repos/hkoskela/$line/issues
+				curl -u 'hkoskela:He8sky98git' -d '{"title": "Compile error","body": "Error compiling $line"}' https://api.github.com/repos/hkoskela/$line/issues
 				cd ~/hello/hello/$line
 				git reset --hard HEAD@{1}
 				cd ~/hello
