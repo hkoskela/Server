@@ -3,7 +3,7 @@
 -define(UPDATE, 'needupdate.txt').
 -define(C_PROGRAM, 'hello_c.ver').
 -export([start/0,loop/0,refresh/0,update/0,clientupdate/3,programupdate/6,cprogramupdate/8]).
--vsn(3.02).
+-vsn(3.03).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -119,8 +119,8 @@ loop() ->
             io:format("*** SERVER (~p)*** Hello.beam: ~p~n Client.beam: ~p~n Hello_c: ~p~n from ~p~n",[S,V,C,Cver,Node]),
             {ok,{hello,[L]}} = beam_lib:version(hello),
             {ok,{client,[Cl]}} = beam_lib:version(client),
-			{ok,F} = file:open(?C_PROGRAM),
-			{ok,Cv} = io:getline(F,""),
+			{ok,F} = file:open(?C_PROGRAM, [read]),
+			{ok,Cv} = io:read_line(F),
 			file:close(F),
             io:format("Server: ~p Node: ~p~n", [L,V]),
             
