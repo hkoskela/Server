@@ -50,7 +50,7 @@ do
 				echo "$line compiled OK"
 				cd ~/hello/test
 				mv $line ~/hello/helloc
-				cp ~/hello/hello/$line/$line.ver ~/helloc
+				cp ~/hello/hello/$line/$line.ver ~/hello/helloc
 				cd ~/hello
 			fi
 		fi
