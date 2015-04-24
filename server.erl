@@ -1,9 +1,9 @@
 -module(server).
 -define(CLIENTS, 'clients.txt').
 -define(UPDATE, 'needupdate.txt').
--define(C_PROGRAM, 'hello_c.ver').
+-define(C_PROGRAM, '~/hello/helloc/hello_c.ver').
 -export([start/0,loop/0,refresh/0,update/0,clientupdate/3,programupdate/6,cprogramupdate/8]).
--vsn(3.07).
+-vsn(3.09).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
