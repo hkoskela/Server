@@ -22,7 +22,7 @@ do
 				while read auth
 				do
 					curl -u $auth -d '{"title": "Compile error","body": "Error compiling $line"}' https://api.github.com/repos/hkoskela/$line/issues
-				done < auth.txt
+				done < ~/hello/auth.txt
 				cd ~/hello/hello/$line
 				git reset --hard HEAD@{1}
 				cd ~/hello
@@ -42,7 +42,7 @@ do
 				while read auth
 				do
 					curl -u $auth -d '{"title": "Compile error","body": "Error compiling $line"}' https://api.github.com/repos/hkoskela/$line/issues
-				done < auth.txt
+				done < ~/hello/auth.txt
 				cd ~/hello/hello/$line
 				git reset --hard HEAD@{1}
 				cd ~/hello
