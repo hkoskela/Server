@@ -49,8 +49,8 @@ do
 			else
 				echo "$line compiled OK"
 				cd ~/hello/test
-				mv $line ~/hello
-				cp ~/hello/hello/$line/$line.ver ~/hello
+				mv $line ~/hello/helloc
+				cp ~/hello/hello/$line/$line.ver ~/helloc
 				cd ~/hello
 			fi
 		fi
