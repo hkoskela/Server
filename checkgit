@@ -21,7 +21,7 @@ do
 				echo "*** $line compile error, resetting to last version ***"
 				while read auth
 				do
-					curl -u $auth -d '{"title": "Compile error","body": "Error compiling $line"}' https://api.github.com/repos/hkoskela/$line/issues
+					curl -u $auth -d '{"title": "Compile error","body": "Error compiling"}' https://api.github.com/repos/hkoskela/$line/issues
 				done < ~/hello/auth.txt
 				cd ~/hello/hello/$line
 				git reset --hard HEAD@{1}
@@ -41,7 +41,7 @@ do
 				echo "*** $line compile error, resetting to last version ***"
 				while read auth
 				do
-					curl -u $auth -d '{"title": "Compile error","body": "Error compiling $line"}' https://api.github.com/repos/hkoskela/$line/issues
+					curl -u $auth -d '{"title": "Compile error","body": "Error compiling"}' https://api.github.com/repos/hkoskela/$line/issues
 				done < ~/hello/auth.txt
 				cd ~/hello/hello/$line
 				git reset --hard HEAD@{1}
